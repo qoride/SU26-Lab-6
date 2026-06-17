@@ -3,22 +3,22 @@ body{
     background-color: white;
     margin: 0;
     padding: 0;
-}
-
-.container{
+  }
+  
+  .container{
     max-width: 950px;
     margin: 40px;
     padding-left: 20px;
     padding-right: 20px;
-}
-
-h1{
+  }
+  
+  h1{
     margin: 0;
     font-size: 24px;
     color: black;
-}
-
-.loginBox{
+  }
+  
+  .loginBox{
     width: 420px;
     margin: 100px;
     padding-top: 35px;
@@ -28,9 +28,9 @@ h1{
     background-color: lightblue;
     border: 1px solid gray;
     box-sizing: border-box;
-}
-
-.loginBox input{
+  }
+  
+  .loginBox input{
     width: 950px;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -42,9 +42,9 @@ h1{
     margin-bottom: 20px;
     box-sizing: border-box;
     background-color: white;
-}
-
-.loginBox button{
+  }
+  
+  .loginBox button{
     background-color: lightgray;
     color: black;
     padding-top: 6px;
@@ -54,9 +54,9 @@ h1{
     font-size: 16px;
     border: 1px solid gray;
     cursor: pointer;
-}
-
-.hintBox{
+  }
+  
+  .hintBox{
     margin-top: 15px;
     font-size: 14px;
     color: darkgray;
@@ -66,9 +66,9 @@ h1{
     padding-left: 10px;
     padding-right: 10px;
     border: 1px dashed gray;
-}
-
-.topBar{
+  }
+  
+  .topBar{
     background-color: white;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -76,17 +76,17 @@ h1{
     padding-right: 30px;
     border-bottom: 1px solid lightgray;
     overflow: hidden;
-}
-
-.topBar p{
+  }
+  
+  .topBar p{
     float: left;
     font-size: 16px;
     font-weight: bold;
     color: darkgray;
     margin: 5px 0 0 0;
-}
-
-.topBar h1{
+  }
+  
+  .topBar h1{
     display: inline-block;
     font-size: 24px;
     color: black;
@@ -94,26 +94,26 @@ h1{
     text-align: center;
     width: 475px;
     margin: 0px;
-}
-
-.topBar a{
+  }
+  
+  .topBar a{
     float: right;
     color: black;
     text-decoration: underline;
     font-weight: bold;
     margin-top: 5px;
-}
-
-.tabs{
+  }
+  
+  .tabs{
     background-color: darkblue;
     padding-top: 20px;
     padding-bottom: 0;
     padding-left: 20px;
     padding-right: 20px;
     overflow: hidden;
-}
-
-.tabs button{
+  }
+  
+  .tabs button{
     float: left;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -124,40 +124,40 @@ h1{
     border: none;
     cursor: pointer;
     margin-right: 2px;
-}
-
-.tabs button.active{
+  }
+  
+  .tabs button.active{
     background-color: blue;
     color: white;
-}
-
-.tabs button.inactive{
+  }
+  
+  .tabs button.inactive{
     background-color: lightblue;
     color: darkblue;
-}
-
-.panel{
+  }
+  
+  .panel{
     background-color: darkblue;
     padding-top: 0;
     padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
     overflow: hidden;
-}
-
-.panel h2{
+  }
+  
+  .panel h2{
     color: white;
     font-size: 20px;
     margin: 15px 0;
-}
-
-table{
+  }
+  
+  table{
     width: 950px;
     border-collapse: collapse;
     background-color: white;
-}
-
-th{
+  }
+  
+  th{
     background-color: steelblue;
     color: black;
     font-weight: bold;
@@ -167,9 +167,9 @@ th{
     padding-left: 12px;
     padding-right: 12px;
     border: 1px solid gray;
-}
-
-td{
+  }
+  
+  td{
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 12px;
@@ -178,23 +178,23 @@ td{
     color: black;
     font-size: 15px;
     background-color: white;
-}
-
-tr:nth-child(even) td{
+  }
+  
+  tr:nth-child(even) td{
     background-color: aliceblue;
-}
-
-a{
+  }
+  
+  a{
     color: darkblue;
     text-decoration: underline;
     font-weight: bold;
-}
-
-.hidden{
+  }
+  
+  .hidden{
     display: none !important;
-}
-
-.plusButton{
+  }
+  
+  .plusButton{
     color: darkblue;
     font-weight: bold;
     font-size: 22px;
@@ -205,26 +205,26 @@ a{
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;
-}
-
-.minusButton{
+  }
+  
+  .minusButton{
     color: black;
     font-weight: normal;
     font-size: 16px;
     border: none;
     background: none;
     cursor: default;
-}
-
-#backButton{
+  }
+  
+  #backButton{
     color: white;
     text-decoration: none;
     font-size: 20px;
     margin-right: 15px;
     font-weight: bold;
-}
-
-input[type="number"]{
+  }
+  
+  input[type="number"]{
     width: 60px;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -234,11 +234,12 @@ input[type="number"]{
     border: 1px solid gray;
     text-align: center;
     background-color: white;
-}
-
-#loginError{
+  }
+  
+  #loginError{
     color: red;
     text-align: center;
     font-weight: bold;
     margin-bottom: 15px;
-}
+  }
+  
