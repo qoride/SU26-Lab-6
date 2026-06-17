@@ -1,14 +1,21 @@
 from flask import Flask, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 import json
 
 app = Flask(__name__)
 CORS(app)
+# Add this to avoid an error
+app.secret_key = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lab6.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 db = SQLAlchemy(app)
+admin = Admin(app, name='Lab6VAP')
+# admin = Admin(app, name='Lab6VAP', template_mode='bootstrap3')
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +38,7 @@ class Enrollment(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     grade = db.Column(db.Float, nullable=True)
     student = db.relationship("User", backref="enrollments")
-    course = db.relationiship("Course", backref="enrollments")
+    course = db.relationship("Course", backref="enrollments")
 
 def course_to_dict(course):
     enrolled = Enrollment.query.filter_by(course_id=course.id).count()
@@ -74,6 +81,16 @@ def seed_data():
     db.session.add_all(enrollments)
     db.session.commit()
 
+class UserView(ModelView):
+    column_exclude_list = ['password'] # exclude the password column
+    column_searchable_list = ['name', 'username'] # make columns searchable
+
+class CourseView(ModelView):
+    column_searchable_list = ['course_name'] # make columns searchable
+
+admin.add_view(UserView(User, db.session))
+admin.add_view(CourseView(Course, db.session))
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -88,3 +105,15 @@ def login():
         return json.dumps({"success": True, "name": user.name, "role": user.role})
     
     return json.dumps({"success": False, "error": "Invalid username or password"})
+
+
+
+
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()   # Creates all tables based on your models
+        seed_data()
+    app.run(port=8000,debug=True)
+
+
