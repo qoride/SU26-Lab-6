@@ -87,3 +87,4 @@ def login():
         return json.dumps({"success": True, "name": user.name, "role": user.role})
     
     return json.dumps({"success": False, "error": "Invalid username or password"})
+
