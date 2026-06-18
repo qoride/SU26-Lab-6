@@ -70,16 +70,21 @@ def seed_data():
     db.session.commit()
 
     cse108 = Course(course_name="Full Stack Web Development", teacher_id=hepworth.id, time="MWF 10:00 AM - 12:20 PM", capacity=64)
+    # cse111 = Course(course_name="Data Base Systems", teacher_id=hepworth.id, time="MWF 2:00 PM - 3:20 PM", capacity=30)
 
+    # db.session.add_all({cse108, cse111})
     db.session.add_all({cse108})
     db.session.commit()
 
     enrollments = [
-        Enrollment(student_id=anthony.id, course_id=cse108.id, grade=100)
+        Enrollment(student_id=anthony.id, course_id=cse108.id, grade=100),
+        Enrollment(student_id=vishnu.id, course_id=cse108.id, grade=100)
     ]
 
     db.session.add_all(enrollments)
     db.session.commit()
+
+#admin views
 
 class UserView(ModelView):
     column_exclude_list = ['password'] # exclude the password column
@@ -88,12 +93,17 @@ class UserView(ModelView):
 class CourseView(ModelView):
     column_searchable_list = ['course_name'] # make columns searchable
 
-admin.add_view(UserView(User, db.session))
-admin.add_view(CourseView(Course, db.session))
+admin.add_view(UserView(User, db))
+admin.add_view(CourseView(Course, db))
+admin.add_view(ModelView(Enrollment, db))
+
+
+#endpoints
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+def home():
+    return "Flask is runing good!"
+    # return render_template("index.html")
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -105,6 +115,7 @@ def login():
         return json.dumps({"success": True, "name": user.name, "role": user.role})
     
     return json.dumps({"success": False, "error": "Invalid username or password"})
+    
 @app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
@@ -247,6 +258,7 @@ def admin_users():
 @app.route("/admin/courses", methods=["GET"])
 def admin_courses():
     courses = Course.query.all()
+    # print(courses)
     result = []
 
     for course in courses:
