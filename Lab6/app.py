@@ -88,3 +88,158 @@ def login():
     
     return json.dumps({"success": False, "error": "Invalid username or password"})
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return json.dumps({"success": True})
+
+@app.route("/current_user", methods=["GET"])
+def current_user():
+    if "user_id" not in session:
+        return json.dumps({"logged_in": False})
+
+    user = User.query.get(session["user_id"])
+
+    return json.dumps({
+        "logged_in": True,
+        "id": user.id,
+        "name": user.name,
+        "role": user.role
+    })
+
+@app.route("/student/courses", methods=["GET"])
+def student_courses():
+    if "user_id" not in session:
+        return json.dumps([])
+
+    enrollments = Enrollment.query.filter_by(student_id=session["user_id"]).all()
+    courses = []
+
+    for enrollment in enrollments:
+        courses.append(course_to_dict(enrollment.course))
+
+    return json.dumps(courses)
+
+@app.route("/courses", methods=["GET"])
+def all_courses():
+    courses = Course.query.all()
+    result = []
+
+    for course in courses:
+        data = course_to_dict(course)
+
+        if "user_id" in session:
+            enrollment = Enrollment.query.filter_by(student_id=session["user_id"], course_id=course.id).first()
+            data["already_enrolled"] = enrollment is not None
+        else:
+            data["already_enrolled"] = False
+
+        result.append(data)
+
+    return json.dumps(result)
+
+@app.route("/enroll/<int:course_id>", methods=["POST"])
+def enroll(course_id):
+    if "user_id" not in session:
+        return json.dumps({"success": False, "error": "Not logged in"})
+
+    user = User.query.get(session["user_id"])
+
+    if user.role != "student":
+        return json.dumps({"success": False, "error": "Only students can enroll"})
+
+    course = Course.query.get(course_id)
+
+    if not course:
+        return json.dumps({"success": False, "error": "Course not found"})
+
+    enrollment = Enrollment.query.filter_by(student_id=user.id, course_id=course.id).first()
+
+    if enrollment:
+        return json.dumps({"success": False, "error": "Already enrolled"})
+
+    enrolled = Enrollment.query.filter_by(course_id=course.id).count()
+
+    if enrolled >= course.capacity:
+        return json.dumps({"success": False, "error": "Class is full"})
+
+    new_enrollment = Enrollment(student_id=user.id, course_id=course.id, grade=None)
+    db.session.add(new_enrollment)
+    db.session.commit()
+
+    return json.dumps({"success": True})
+
+@app.route("/teacher/courses", methods=["GET"])
+def teacher_courses():
+    if "user_id" not in session:
+        return json.dumps([])
+
+    courses = Course.query.filter_by(teacher_id=session["user_id"]).all()
+    result = []
+
+    for course in courses:
+        result.append(course_to_dict(course))
+
+    return json.dumps(result)
+
+@app.route("/teacher/course/<int:course_id>", methods=["GET"])
+def teacher_course_students(course_id):
+    enrollments = Enrollment.query.filter_by(course_id=course_id).all()
+    course = Course.query.get(course_id)
+    result = []
+
+    for enrollment in enrollments:
+        result.append({
+            "enrollment_id": enrollment.id,
+            "student_name": enrollment.student.name,
+            "grade": enrollment.grade
+        })
+
+    return json.dumps({
+        "course_name": course.course_name,
+        "students": result
+    })
+
+@app.route("/teacher/grade/<int:enrollment_id>", methods=["PUT"])
+def update_grade(enrollment_id):
+    data = request.get_json()
+    enrollment = Enrollment.query.get(enrollment_id)
+
+    if enrollment:
+        enrollment.grade = data["grade"]
+        db.session.commit()
+
+    return json.dumps({"success": True})
+
+@app.route("/admin/users", methods=["GET"])
+def admin_users():
+    users = User.query.all()
+    result = []
+
+    for user in users:
+        result.append({
+            "id": user.id,
+            "username": user.username,
+            "password": user.password,
+            "name": user.name,
+            "role": user.role
+        })
+
+    return json.dumps(result)
+
+@app.route("/admin/courses", methods=["GET"])
+def admin_courses():
+    courses = Course.query.all()
+    result = []
+
+    for course in courses:
+        result.append(course_to_dict(course))
+
+    return json.dumps(result)
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        seed_data()
+
+    app.run(debug=True)
