@@ -72,25 +72,18 @@ def seed_data():
     db.session.commit()
 
     cse108 = Course(course_name="Full Stack Web Development", teacher_id=hepworth.id, time="MWF 10:00 AM - 12:20 PM", capacity=64)
-<<<<<<< HEAD
     math032 = Course(course_name="Probability and Statistics", teacher_id=keith.id, time="MWF 1:30 PM - 3:20 PM", capacity=128)
+    cse111 = Course(course_name="Data Base Systems", teacher_id=hepworth.id, time="MWF 2:00 PM - 3:20 PM", capacity=30)
 
-    db.session.add_all({cse108,math032})
-=======
-    # cse111 = Course(course_name="Data Base Systems", teacher_id=hepworth.id, time="MWF 2:00 PM - 3:20 PM", capacity=30)
-
-    # db.session.add_all({cse108, cse111})
-    db.session.add_all({cse108})
->>>>>>> 90a86e7b427bfc1fe2ae940f7c9cd6b3b2f2369a
+    db.session.add_all({cse108,math032,cse111})
     db.session.commit()
 
     enrollments = [
         Enrollment(student_id=anthony.id, course_id=cse108.id, grade=100),
-<<<<<<< HEAD
-        Enrollment(student_id=anthony.id, course_id=math032.id, grade=100)
-=======
-        Enrollment(student_id=vishnu.id, course_id=cse108.id, grade=100)
->>>>>>> 90a86e7b427bfc1fe2ae940f7c9cd6b3b2f2369a
+        Enrollment(student_id=anthony.id, course_id=math032.id, grade=100),
+        Enrollment(student_id=vishnu.id, course_id=cse108.id, grade=100),
+        Enrollment(student_id=prathi.id, course_id=cse108.id, grade=100),
+        Enrollment(student_id=natii.id, course_id=cse108.id, grade=100)
     ]
 
     db.session.add_all(enrollments)
