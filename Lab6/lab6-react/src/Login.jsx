@@ -4,7 +4,8 @@ function Login(){
     const [loginFormData,setLoginFormData] = useState("{username: '', password: ''}")
 
     const loginSubmit = () => {
-        //alert(loginFormData.username);
+        alert(loginFormData.username);
+        // will use axios or fetch
     }
 
     return (
