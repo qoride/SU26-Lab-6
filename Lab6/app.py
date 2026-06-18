@@ -52,23 +52,27 @@ def seed_data():
     anthony = User(username="aliu", password="password", name="Anthony Liu", role="student")
     vishnu = User(username="vdeva", password="password", name="Vishnu Devarapalli", role="student")
     prathi = User(username="psatti", password="password", name="Prathi Sattiamoorthy", role="student")
+    natii = User(username="gnatiiol", password="password", name="Natiiol Gurmessa", role="student")
 
     hepworth = User(username="ahepworth", password="password", name="Dr Hepworth", role="teacher")
+    keith = User(username="tkeith", password="password", name="Keith Thompson", role="teacher")
 
     admin = User(username="admin", password="password", name="Jane Smith", role="admin")
 
-    db.session.add_all({anthony,vishnu,prathi,
-                        hepworth,
+    db.session.add_all({anthony,vishnu,prathi,natii,
+                        hepworth,keith,
                         admin})
     db.session.commit()
 
     cse108 = Course(course_name="Full Stack Web Development", teacher_id=hepworth.id, time="MWF 10:00 AM - 12:20 PM", capacity=64)
+    math032 = Course(course_name="Probability and Statistics", teacher_id=keith.id, time="MWF 1:30 PM - 3:20 PM", capacity=128)
 
-    db.session.add_all({cse108})
+    db.session.add_all({cse108,math032})
     db.session.commit()
 
     enrollments = [
-        Enrollment(student_id=anthony.id, course_id=cse108.id, grade=100)
+        Enrollment(student_id=anthony.id, course_id=cse108.id, grade=100),
+        Enrollment(student_id=anthony.id, course_id=math032.id, grade=100)
     ]
 
     db.session.add_all(enrollments)
