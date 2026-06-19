@@ -9,6 +9,7 @@ function Login(){
 
     const loginSubmit = (e) => {
         e.preventDefault();
+        localStorage.clear();
         if (!loginFormData.username.trim() || !loginFormData.password.trim()){
             setLogInErrMsg("Please Enter A Vaild Username And Password");
             return;
@@ -45,6 +46,7 @@ function Login(){
             localStorage.setItem("role",result.role);
           }else{
             //alert("in else");
+            localStorage.clear();
             setLogInErrMsg(result.error);
             return;
           }
@@ -56,6 +58,7 @@ function Login(){
           }
 
         } catch (err) {
+            localStorage.clear();
             setLogInErrMsg(err.message || "An error occurred");
         }
     }
