@@ -13,6 +13,7 @@ function ACMEUniversityApp() {
           <Route path="/login" element={<Login />} />
           <Route path="/student" element={<Student />} />
           <Route path="/teacher" element={<Teacher />} />
+          <Route path="*" element={<Navigate to="/login" replace />}/>
         </Routes>
       </BrowserRouter>
     </div>

@@ -30,15 +30,15 @@ class Course(db.Model):
     teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     time = db.Column(db.DateTime, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
-    teacher = db.relationship("User", backref="courses")
+    teacher = db.relationship("User", backref="course")
 
 class Enrollment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     grade = db.Column(db.Float, nullable=True)
-    student = db.relationship("User", backref="enrollments")
-    course = db.relationship("Course", backref="enrollments")
+    student = db.relationship("User", backref="enrollment")
+    course = db.relationship("Course", backref="enrollment")
 
 def course_to_dict(course):
     enrolled = Enrollment.query.filter_by(course_id=course.id).count()
@@ -93,7 +93,7 @@ def seed_data():
 
 class UserView(ModelView):
     column_exclude_list = ['password'] # exclude the password column
-    column_searchable_list = ['name', 'username'] # make columns searchable
+    column_searchable_list = ['name', 'username','role'] # make columns searchable
 
 class CourseView(ModelView):
     column_searchable_list = ['course_name'] # make columns searchable
@@ -117,8 +117,10 @@ def login():
 
     if user:
         session["user_id"] = user.id
+        print(json.dumps({"success": True, "name": user.name, "role": user.role}))
         return json.dumps({"success": True, "name": user.name, "role": user.role})
     
+    print(json.dumps({"success": False, "error": "Invalid username or password"}))
     return json.dumps({"success": False, "error": "Invalid username or password"})
     
 @app.route("/logout", methods=["POST"])
