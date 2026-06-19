@@ -28,7 +28,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_name = db.Column(db.String(100), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    time = db.Column(db.DateTime, nullable=False)
+    time = db.Column(db.String(100), nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     teacher = db.relationship("User", backref="course")
 
