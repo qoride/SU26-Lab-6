@@ -5,9 +5,10 @@ body{
   padding: 0;
 }
 
+/* FIX 1: Increased max-width from 950px to 1100px to allow the panel to expand */
 .container{
-  max-width: 950px;
-  margin: 40px;
+  max-width: 1100px;
+  margin: 40px auto; /* Centers the container nicely on larger displays */
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -20,7 +21,7 @@ h1{
 
 .loginBox{
   width: 420px;
-  margin: 100px;
+  margin: 100px auto; /* Centers the login block on screen */
   padding-top: 35px;
   padding-bottom: 35px;
   padding-left: 35px;
@@ -30,8 +31,8 @@ h1{
   box-sizing: border-box;
 }
 
-.loginBox input{
-  width: 950px;
+.loginBox input {
+  width: 100%; 
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 8px;
@@ -86,13 +87,14 @@ h1{
   margin: 5px 0 0 0;
 }
 
+/* FIX 2: Expanded width from 475px to match the wider top bar flow */
 .topBar h1{
   display: inline-block;
   font-size: 24px;
   color: black;
   font-weight: bold;
   text-align: center;
-  width: 475px;
+  width: 600px;
   margin: 0px;
 }
 
@@ -151,10 +153,14 @@ h1{
   margin: 15px 0;
 }
 
-table{
-  width: 950px;
+/* FIX 3: Increased structural width from 950px to 1060px to expand tables cleanly */
+/* Find this rule in ACMEUniversityApp.css and change it to this: */
+table {
+  width: 100%;
   border-collapse: collapse;
   background-color: white;
+  margin-bottom: 10px;
+  table-layout: fixed; /* Ensures column percentage constraints are followed perfectly */
 }
 
 th{
@@ -194,26 +200,26 @@ a{
   display: none !important;
 }
 
-.plusButton{
-  color: darkblue;
+/* ADDED: Clean styling rules for the active Add Button text variant */
+.addButton {
+  background-color: #5cb85c;
+  color: white;
+  padding: 6px 14px;
   font-weight: bold;
-  font-size: 22px;
-  border: none;
-  background: none;
+  border: 1px solid #4cae4c;
+  border-radius: 4px;
   cursor: pointer;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
 }
 
-.minusButton{
-  color: black;
-  font-weight: normal;
-  font-size: 16px;
-  border: none;
-  background: none;
-  cursor: default;
+/* ADDED: Clean styling rules for the active Remove Button text variant */
+.removeButton {
+  background-color: #d9534f;
+  color: white;
+  padding: 6px 14px;
+  font-weight: bold;
+  border: 1px solid #d43f3a;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 #backButton{
