@@ -19,10 +19,10 @@ export function EnrolledCoursesTable({ courses }) {
       <tbody>
         {courses.map((course) => (
           <tr key={course.id}>
-            <td>{course.name}</td>
+            <td>{course.course_name}</td>
             <td>{course.teacher}</td>
             <td>{course.time}</td>
-            <td>{course.enrolled}/{course.capacity}</td>
+            <td>{course.students_enrolled}/{course.capacity}</td>
           </tr>
         ))}
       </tbody>
@@ -54,10 +54,10 @@ export function AvailableCoursesTable({ courses, myCourses, onEnroll, onDrop }) 
 
           return (
             <tr key={course.id}>
-              <td>{course.name}</td>
+              <td>{course.course_name}</td>
               <td>{course.teacher}</td>
               <td>{course.time}</td>
-              <td>{course.enrolled}/{course.capacity}</td>
+              <td>{course.students_enrolled}/{course.capacity}</td>
               <td style={{ textAlign: 'center', padding: '8px' }}>
                 {isEnrolled ? (
                   <button 

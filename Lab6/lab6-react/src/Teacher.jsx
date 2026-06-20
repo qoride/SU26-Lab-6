@@ -9,9 +9,9 @@ export default function Teacher({ user, onLogout }) {
 
   // Fetch all classes taught by this teacher
   const fetchTeacherCourses = async () => {
-    if (!user?.username) return;
+    if (!user) return;
     try {
-      const res = await fetch(`/api/teacher/${user.username}/courses`);
+      const res = await fetch(`/api/teacher/courses`);
       const data = await res.json();
       setCourses(data);
     } catch (err) {
@@ -24,13 +24,13 @@ export default function Teacher({ user, onLogout }) {
   const fetchCourseRoster = async (course) => {
     setSelectedCourse(course);
     try {
-      const res = await fetch(`/api/courses/${course.id}/students`);
+      const res = await fetch(`/api/teacher/course/${course.id}`);
       const data = await res.json();
       setRoster(data);
       
       // Initialize text box states with current grades
       const initialGrades = {};
-      data.forEach(student => {
+      data.students.forEach(student => {
         initialGrades[student.enrollment_id] = student.grade;
       });
       setGradeInputs(initialGrades);
@@ -43,8 +43,8 @@ export default function Teacher({ user, onLogout }) {
   const handleGradeChangeSubmit = async (enrollmentId) => {
     const currentGradeInput = gradeInputs[enrollmentId];
     try {
-      const res = await fetch('/api/enrollment/grade', {
-        method: 'POST',
+      const res = await fetch(`/api/teacher/grade/${enrollmentId}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           enrollment_id: enrollmentId,
@@ -71,7 +71,7 @@ export default function Teacher({ user, onLogout }) {
     <div style={{ width: '100%' }}>
       {/* Universal top layout block */}
       <div className="topBar">
-        <p>Welcome {user?.display_name || user?.username || 'Teacher'}!</p>
+        <p>Welcome {user}!</p>
         <h1>ACME University</h1>
         <a href="#logout" onClick={(e) => { e.preventDefault(); onLogout(); }}>Sign out</a>
       </div>
@@ -101,9 +101,9 @@ export default function Teacher({ user, onLogout }) {
             <tbody>
               {courses.map((course) => (
                 <tr key={course.id} style={{ backgroundColor: selectedCourse?.id === course.id ? '#e2efff' : '' }}>
-                  <td>{course.name}</td>
+                  <td>{course.course_name}</td>
                   <td>{course.time}</td>
-                  <td>{course.enrolled}/{course.capacity}</td>
+                  <td>{course.students_enrolled}/{course.capacity}</td>
                   <td style={{ textAlign: 'center' }}>
                     <button 
                       onClick={() => fetchCourseRoster(course)}
@@ -139,16 +139,16 @@ export default function Teacher({ user, onLogout }) {
                 <thead>
                   <tr>
                     <th>Student Name</th>
-                    <th>Username</th>
+                    {/* <th>Username</th> */}
                     <th style={{ width: '150px' }}>Current Grade</th>
                     <th style={{ width: '160px', textAlign: 'center' }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {roster.map((student) => (
+                  {roster.students.map((student) => (
                     <tr key={student.enrollment_id}>
                       <td>{student.student_name}</td>
-                      <td>{student.student_username}</td>
+                      {/* <td>{student.student_username}</td> */}
                       <td>
                         <input 
                           type="text"

@@ -23,7 +23,8 @@ function Login(){
         //alert(username);
 
         try {
-          const response = await fetch("http://localhost:8000/login", {
+          const response = await fetch("/api/login", {
+          //const response = await fetch("http://localhost:8000/login", {
                               method: "POST",
                               headers: {
                                 'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ function Login(){
             
             // localStorage.setItem("user", JSON.stringify(user));
             // // alert(JSON.parse(localStorage.getItem["user"]).role);
-
+            
             localStorage.setItem("name", result.name);
             localStorage.setItem("role",result.role);
             // alert(localStorage.getItem["name"]);

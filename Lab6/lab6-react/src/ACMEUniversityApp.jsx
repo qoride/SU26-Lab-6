@@ -5,12 +5,25 @@ import StudentDashboard from './StudentDashboard';
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
 function ACMEUniversityApp() {
-
+  
   const handleLogout = () => {
-    setUser(null);
     localStorage.clear();
+    logoutUser();
     window.location.href = "/login";
     return;
+  };
+
+  const logoutUser = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
+      });
+      
+    } catch (err) {
+      console.error("logout error:", err);
+    }
   };
 
   return (

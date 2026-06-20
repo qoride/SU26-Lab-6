@@ -13,12 +13,12 @@ export default function StudentDashboard({ user, onLogout }) {
     try {
       // Fetch student's enrolled courses
       // const enrolledRes = await fetch(`/api/student/${user}/courses`);
-      const enrolledRes = await fetch(`http://localhost:8000/student/courses`, {credentials: "include",});
+      const enrolledRes = await fetch(`/api/student/courses`, {credentials: "include",});
       const enrolledData = await enrolledRes.json();
       setMyCourses(enrolledData);
 
       // Fetch all courses offered by school
-      const allRes = await fetch('http://localhost:8000/courses', {credentials: "include",});
+      const allRes = await fetch('/api/courses', {credentials: "include",});
       const allData = await allRes.json();
       setAllCourses(allData);
     } catch (err) {
@@ -34,8 +34,8 @@ export default function StudentDashboard({ user, onLogout }) {
   // Handle enrolling in a new class
   const handleEnroll = async (courseId) => {
     try {
-      // FIX: Changed endpoint from '/api/courses/drop' to '/api/courses/enroll'
-      const response = await fetch('http://localhost:8000/enroll/' + courseId, {
+    
+      const response = await fetch('/api/enroll/' + courseId, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, course_id: courseId }),
@@ -57,7 +57,7 @@ export default function StudentDashboard({ user, onLogout }) {
   // Handle dropping an enrolled class
   const handleDrop = async (courseId) => {
     try {
-      const response = await fetch('http://localhost:8000/enroll/'+courseId, {
+      const response = await fetch('/api/enroll/'+courseId, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, course_id: courseId }),
