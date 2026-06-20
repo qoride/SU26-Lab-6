@@ -9,15 +9,16 @@ export default function StudentDashboard({ user, onLogout }) {
 
   // Fetch data from Flask backend using Vite Proxy relative routes
   const fetchData = async () => {
-    if (!user?.username) return;
+    if (!user) return;
     try {
       // Fetch student's enrolled courses
-      const enrolledRes = await fetch(`/api/student/${user.username}/courses`);
+      // const enrolledRes = await fetch(`/api/student/${user}/courses`);
+      const enrolledRes = await fetch(`http://localhost:8000/student/courses`, {credentials: "include",});
       const enrolledData = await enrolledRes.json();
       setMyCourses(enrolledData);
 
       // Fetch all courses offered by school
-      const allRes = await fetch('/api/courses');
+      const allRes = await fetch('http://localhost:8000/courses', {credentials: "include",});
       const allData = await allRes.json();
       setAllCourses(allData);
     } catch (err) {
@@ -34,12 +35,13 @@ export default function StudentDashboard({ user, onLogout }) {
   const handleEnroll = async (courseId) => {
     try {
       // FIX: Changed endpoint from '/api/courses/drop' to '/api/courses/enroll'
-      const response = await fetch('/api/courses/enroll', {
+      const response = await fetch('http://localhost:8000/enroll/' + courseId, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user?.username, course_id: courseId }),
+        body: JSON.stringify({ username: user, course_id: courseId }),
+        credentials: "include",
       });
-      
+      // console.log()
       const data = await response.json();
       if (response.ok) {
         // Refresh data to update enrollment counts and tables dynamically
@@ -55,10 +57,11 @@ export default function StudentDashboard({ user, onLogout }) {
   // Handle dropping an enrolled class
   const handleDrop = async (courseId) => {
     try {
-      const response = await fetch('/api/courses/drop', {
-        method: 'POST',
+      const response = await fetch('http://localhost:8000/enroll/'+courseId, {
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user?.username, course_id: courseId }),
+        body: JSON.stringify({ username: user, course_id: courseId }),
+        credentials: "include",
       });
       
       const data = await response.json();
@@ -76,7 +79,7 @@ export default function StudentDashboard({ user, onLogout }) {
     <div style={{ width: '100%' }}>
       {/* Top Bar matching lab design mockup exactly */}
       <div className="topBar">
-        <p>Welcome {user?.displayName || user?.username || 'Student'}!</p>
+        <p>Welcome {user}!</p>
         <h1>ACME University</h1>
         <a href="#logout" onClick={(e) => { e.preventDefault(); onLogout(); }}>Sign out</a>
       </div>

@@ -29,7 +29,8 @@ function Login(){
                                 'Content-Type': 'application/json',
                                 Accept: "application/json",
                               },
-                              body: JSON.stringify({username,password})
+                              body: JSON.stringify({username,password}),
+                              credentials: "include",
                             });
           //alert(response.ok);
           if(!response.ok){
@@ -42,8 +43,14 @@ function Login(){
 
           if(result.success){
             //alert(result.success);
+            // const user = {username: result.name, role: result.role};
+            
+            // localStorage.setItem("user", JSON.stringify(user));
+            // // alert(JSON.parse(localStorage.getItem["user"]).role);
+
             localStorage.setItem("name", result.name);
             localStorage.setItem("role",result.role);
+            // alert(localStorage.getItem["name"]);
           }else{
             //alert("in else");
             localStorage.clear();
