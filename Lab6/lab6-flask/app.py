@@ -6,7 +6,8 @@ from flask_admin.contrib.sqla import ModelView
 import json
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 # Add this to avoid an error
 app.secret_key = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lab6.db'
@@ -200,6 +201,37 @@ def enroll(course_id):
 
     new_enrollment = Enrollment(student_id=user.id, course_id=course.id, grade=None)
     db.session.add(new_enrollment)
+    db.session.commit()
+
+    return json.dumps({"success": True})
+
+@app.route("/enroll/<int:course_id>", methods=["DELETE"])
+def dropEnrollment(course_id):
+    if "user_id" not in session:
+        return json.dumps({"success": False, "error": "Not logged in"})
+
+    user = User.query.get(session["user_id"])
+
+    if user.role != "student":
+        return json.dumps({"success": False, "error": "Only students can Drop a course"})
+
+    course = Course.query.get(course_id)
+
+    if not course:
+        return json.dumps({"success": False, "error": "Course not found"})
+
+    enrollment = Enrollment.query.filter_by(student_id=user.id, course_id=course.id).first()
+
+    if not enrollment:
+        return json.dumps({"success": False, "error": "Student Not enroled"})
+
+    # enrolled = Enrollment.query.filter_by(course_id=course.id).count()
+
+    # if enrolled >= course.capacity:
+    #     return json.dumps({"success": False, "error": "Class is full"})
+
+    # new_enrollment = Enrollment(student_id=user.id, course_id=course.id, grade=None)
+    new_enrollment = Enrollment.query.filter_by(student_id=user.id, course_id=course.id).delete()
     db.session.commit()
 
     return json.dumps({"success": True})
