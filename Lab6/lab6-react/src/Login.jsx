@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login(){
+function Login(props){
     
     const [loginFormData,setLoginFormData] = useState("{username: '', password: ''}");
     const [logInErrMsg,setLogInErrMsg] = useState("");
@@ -35,6 +35,7 @@ function Login(){
                             });
           //alert(response.ok);
           if(!response.ok){
+              props.setUserLoggedin(false);
               localStorage.clear();
               window.location.href = "/login";
               return;
@@ -45,15 +46,15 @@ function Login(){
           if(result.success){
             //alert(result.success);
             // const user = {username: result.name, role: result.role};
-            
             // localStorage.setItem("user", JSON.stringify(user));
             // // alert(JSON.parse(localStorage.getItem["user"]).role);
-            
+            props.setUserLoggedin(true);
             localStorage.setItem("name", result.name);
             localStorage.setItem("role",result.role);
             // alert(localStorage.getItem["name"]);
           }else{
             //alert("in else");
+            props.setUserLoggedin(false);
             localStorage.clear();
             setLogInErrMsg(result.error);
             return;
@@ -66,6 +67,7 @@ function Login(){
           }
 
         } catch (err) {
+            props.setUserLoggedin(false);
             localStorage.clear();
             setLogInErrMsg(err.message || "An error occurred");
         }

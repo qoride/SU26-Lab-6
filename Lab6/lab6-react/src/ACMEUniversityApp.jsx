@@ -3,10 +3,15 @@ import Login from './Login.jsx'
 import Teacher from './Teacher';
 import StudentDashboard from './StudentDashboard';
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { useState } from "react";
+
 
 function ACMEUniversityApp() {
-  
+  const [userLoggedin,setUserLoggedin] = useState(false);
+
+
   const handleLogout = () => {
+    setUserLoggedin(false);
     localStorage.clear();
     logoutUser();
     window.location.href = "/login";
@@ -31,7 +36,7 @@ function ACMEUniversityApp() {
       <BrowserRouter>
         <Routes> 
           
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUserLoggedin={setUserLoggedin}/>} />
           <Route path="/student" element={<RoleBasedRoute allowedRoles={["student"]}>
                                               <StudentDashboard user={localStorage.getItem("name")} onLogout={handleLogout}/>
                                           </RoleBasedRoute>} />
