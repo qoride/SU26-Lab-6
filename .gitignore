@@ -1,0 +1,7 @@
+lab6-flask/.venv/
+lab6-flask/__pycache__/
+lab6-flask/instance/
+lab6-react/node_modules/
+.DS_Store
+*.pyc
+__pycache__/
